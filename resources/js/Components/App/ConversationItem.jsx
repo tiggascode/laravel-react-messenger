@@ -2,6 +2,7 @@ import {Link, usePage} from "@inertiajs/react";
 import UserAvatar from "@/Components/App/UserAvatar.jsx";
 import GroupAvatar from "@/Components/App/GroupAvatar.jsx";
 import UserOptionsDropDown from "@/Components/App/UserOptionsDropDown.jsx";
+import {formatMessageDateShort} from "@/helpers.jsx";
 
 export default function ConversationItem({conversation, selectedConversation = null, online = null}) {
     const page = usePage()
@@ -48,7 +49,7 @@ export default function ConversationItem({conversation, selectedConversation = n
                     </h3>
                     {conversation.last_message_date && (
                         <span className="text-nowrap">
-                            {conversation.last_message_date}
+                            {formatMessageDateShort(conversation.last_message_date)}
                         </span>
                     )}
                 </div>
@@ -61,7 +62,7 @@ export default function ConversationItem({conversation, selectedConversation = n
             {conversation.is_user && (
                 <UserOptionsDropDown conversation={conversation}/>
             )}
-             
+
         </Link>
     )
 }

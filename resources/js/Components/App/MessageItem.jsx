@@ -1,7 +1,7 @@
 import {usePage} from "@inertiajs/react";
 import UserAvatar from "@/Components/App/UserAvatar.jsx";
 import ReactMarkdown from "react-markdown";
-import {formatMessageDateLong} from "@/helpers"
+import {formatMessageDateShort} from "@/helpers"
 
 export default function MessageItem({message}) {
     const currentUser = usePage().props.auth.user
@@ -20,7 +20,7 @@ export default function MessageItem({message}) {
                     ? message.sender.name
                     : ""}
                 <time className="text-xs opacity-50 ml-2">
-                    {formatMessageDateLong(message.created_at)}
+                    {formatMessageDateShort(message.created_at)}
                 </time>
             </div>
             <div className={

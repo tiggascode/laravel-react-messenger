@@ -3,6 +3,7 @@ import {useEffect, useState} from "react";
 import ConversationItem from "@/Components/App/ConversationItem.jsx";
 import TextInput from "@/Components/TextInput.jsx";
 import {PencilSquareIcon} from "@heroicons/react/24/solid/index.js";
+import {useEventBut} from "@/EventBus.jsx";
 
 export default function ChatLayout({children}) {
     const page = usePage()
@@ -11,6 +12,7 @@ export default function ChatLayout({children}) {
     const [localConversations, setLocalConversations] = useState([])
     const [sortedConversations, setSortedConversations] = useState([])
     const [onlineUsers, setOnlineUsers] = useState({})
+    const {on} = useEventBut()
 
     const isUserOnline = (userId) => onlineUsers[userId]
 
@@ -24,6 +26,32 @@ export default function ChatLayout({children}) {
             })
         )
     }
+
+    const messageCreated = (message) => {
+        setLocalConversations((oldUsers) => {
+            return oldUsers.map((u) => {
+                if (message.receiver_id && !u.is_group &&
+                    (u.id == message.sender_id || u.id == message.receiver_id)) {
+                    u.last_message = message.message
+                    u.last_message_date = message.created_at
+                    return u
+                }
+                if (message.group_id && u.is_group && u.id == message.group_id) {
+                    u.last_message = message.message
+                    u.last_message_date = message.created_at
+                    return u
+                }
+                return u
+            })
+        })
+    }
+
+    useEffect(() => {
+        const offCreated = on("message.created", messageCreated)
+        return () => {
+            offCreated()
+        }
+    }, [on]);
 
     useEffect(() => {
         setSortedConversations(
