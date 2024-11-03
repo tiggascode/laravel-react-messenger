@@ -11,7 +11,7 @@
 }
 
 .EmojiPickerReact.epr-dark-theme .epr-emoji-category-label {
-    background-color: theme('colors.gray.900');
+    background-color: theme('colors.gray.800');
 }
 
 .conversation-item .avatar.online:before
